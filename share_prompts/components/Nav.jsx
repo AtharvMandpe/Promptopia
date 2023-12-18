@@ -7,18 +7,18 @@ import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
 
 const Nav = () => {
 
-  const isLoggedIn = true;
+  const { data: session } = useSession();
 
   const [providers, setProviders] = useState(null);
 
   useEffect(() => {
-    const setProviders = async () => {
+    const setUpProviders = async () => {
       const r = await getProviders();
 
       setProviders(r);
     }
 
-    setProviders;
+    setUpProviders();
   }
 ,[]
   )
@@ -43,7 +43,7 @@ const Nav = () => {
       {/* Desktop Navigation */}
       <div className='sm:flex hidden'>
         
-        {isLoggedIn ? (
+        {session?.user ? (
 
           <div className='flex gap-3 md:gap-5'>
 
@@ -57,7 +57,7 @@ const Nav = () => {
 
             <Link href='/profile'>
               <Image
-                src={"/assets/images/logo.svg"}
+                src={session?.user.image}
                 width={37}
                 height={37}
                 className='rounded-full'
